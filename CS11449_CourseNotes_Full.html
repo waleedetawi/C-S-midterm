@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS11449 – Computer & Society | Full Course Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #14171f;
+    --card: #1a1d27;
+    --border: #2a2d3a;
+    --accent-blue: #4f9cf9;
+    --accent-teal: #2dd4bf;
+    --accent-amber: #f59e0b;
+    --accent-rose: #fb7185;
+    --accent-violet: #a78bfa;
+    --accent-green: #34d399;
+    --text-primary: #e8eaf0;
+    --text-secondary: #9ca3b0;
+    --text-muted: #6b7280;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+    --serif: 'Playfair Display', serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    padding: 80px 40px 60px;
+    text-align: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(79,156,249,.12) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 80% 80%, rgba(167,139,250,.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .course-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: .72rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--accent-teal);
+    border: 1px solid var(--accent-teal);
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp .6s .1s forwards;
+  }
+  header h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--text-primary);
+    opacity: 0;
+    animation: fadeUp .6s .25s forwards;
+  }
+  header h1 span { color: var(--accent-blue); }
+  .header-sub {
+    margin-top: 16px;
+    font-size: .95rem;
+    color: var(--text-secondary);
+    font-family: var(--mono);
+    opacity: 0;
+    animation: fadeUp .6s .4s forwards;
+  }
+  .toc {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+    margin-top: 36px;
+    opacity: 0; animation: fadeUp .6s .55s forwards;
+  }
+  .toc a {
+    font-family: var(--mono); font-size: .75rem; letter-spacing: .05em;
+    color: var(--text-secondary); text-decoration: none;
+    border: 1px solid var(--border); border-radius: 2px;
+    padding: 6px 14px;
+    transition: all .2s;
+  }
+  .toc a:hover { color: var(--accent-blue); border-color: var(--accent-blue); }
+
+  /* ── LAYOUT ── */
+  main { max-width: 1100px; margin: 0 auto; padding: 60px 24px 100px; }
+
+  /* ── CHAPTER HEADERS ── */
+  .chapter {
+    margin-bottom: 72px;
+    opacity: 0;
+    animation: fadeUp .7s forwards;
+  }
+  .chapter:nth-child(1) { animation-delay: .1s; }
+  .chapter:nth-child(2) { animation-delay: .2s; }
+  .chapter:nth-child(3) { animation-delay: .3s; }
+  .chapter:nth-child(4) { animation-delay: .4s; }
+
+  .chapter-label {
+    font-family: var(--mono); font-size: .7rem; letter-spacing: .2em;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .ch0 .chapter-label { color: var(--accent-green); }
+  .ch1 .chapter-label { color: var(--accent-blue); }
+  .ch2 .chapter-label { color: var(--accent-teal); }
+  .ch3 .chapter-label { color: var(--accent-violet); }
+
+  .chapter-title {
+    font-family: var(--serif); font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+    font-weight: 700; line-height: 1.2;
+    padding-bottom: 20px; margin-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .ch0 .chapter-title { border-color: rgba(52,211,153,.3); }
+  .ch1 .chapter-title { border-color: rgba(79,156,249,.3); }
+  .ch2 .chapter-title { border-color: rgba(45,212,191,.3); }
+  .ch3 .chapter-title { border-color: rgba(167,139,250,.3); }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 40px; }
+  .section-title {
+    font-family: var(--sans); font-weight: 600; font-size: 1rem;
+    text-transform: uppercase; letter-spacing: .1em;
+    margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::before {
+    content: ''; display: inline-block; width: 18px; height: 2px;
+    background: currentColor; flex-shrink: 0;
+  }
+  .ch0 .section-title { color: var(--accent-green); }
+  .ch1 .section-title { color: var(--accent-blue); }
+  .ch2 .section-title { color: var(--accent-teal); }
+  .ch3 .section-title { color: var(--accent-violet); }
+
+  p { color: var(--text-secondary); font-size: .95rem; margin-bottom: 12px; }
+
+  /* ── CARDS GRID ── */
+  .cards {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px; margin: 20px 0;
+  }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 6px; padding: 20px 22px;
+    transition: border-color .2s, transform .2s;
+  }
+  .card:hover { transform: translateY(-2px); }
+  .ch0 .card:hover { border-color: var(--accent-green); }
+  .ch1 .card:hover { border-color: var(--accent-blue); }
+  .ch2 .card:hover { border-color: var(--accent-teal); }
+  .ch3 .card:hover { border-color: var(--accent-violet); }
+
+  .card-icon { font-size: 1.4rem; margin-bottom: 10px; display: block; }
+  .card-title {
+    font-weight: 600; font-size: .88rem; margin-bottom: 8px;
+    color: var(--text-primary); letter-spacing: .03em;
+  }
+  .card p { font-size: .83rem; margin: 0; line-height: 1.55; }
+
+  /* ── LIST ── */
+  ul.styled {
+    list-style: none; padding: 0;
+    display: flex; flex-direction: column; gap: 8px;
+    margin: 12px 0;
+  }
+  ul.styled li {
+    font-size: .9rem; color: var(--text-secondary);
+    padding: 10px 14px; background: var(--card);
+    border-left: 2px solid var(--border); border-radius: 0 4px 4px 0;
+    transition: border-color .2s;
+  }
+  .ch0 ul.styled li:hover { border-color: var(--accent-green); }
+  .ch1 ul.styled li:hover { border-color: var(--accent-blue); }
+  .ch2 ul.styled li:hover { border-color: var(--accent-teal); }
+  .ch3 ul.styled li:hover { border-color: var(--accent-violet); }
+  ul.styled li strong { color: var(--text-primary); font-weight: 600; }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 6px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: .83rem; }
+  thead tr { background: var(--card); }
+  th {
+    padding: 12px 16px; text-align: left; font-family: var(--mono);
+    font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--text-muted); border-bottom: 1px solid var(--border);
+  }
+  td { padding: 11px 16px; color: var(--text-secondary); border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+  td strong { color: var(--text-primary); font-weight: 500; }
+  td em { color: var(--accent-amber); font-style: normal; font-family: var(--mono); font-size: .78rem; }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    border-radius: 6px; padding: 18px 22px; margin: 20px 0;
+    border: 1px solid; font-size: .88rem; line-height: 1.65;
+  }
+  .highlight.blue { background: rgba(79,156,249,.06); border-color: rgba(79,156,249,.25); }
+  .highlight.teal { background: rgba(45,212,191,.06); border-color: rgba(45,212,191,.25); }
+  .highlight.violet { background: rgba(167,139,250,.06); border-color: rgba(167,139,250,.25); }
+  .highlight.amber { background: rgba(245,158,11,.06); border-color: rgba(245,158,11,.25); }
+  .highlight.green { background: rgba(52,211,153,.06); border-color: rgba(52,211,153,.25); }
+  .highlight.rose { background: rgba(251,113,133,.06); border-color: rgba(251,113,133,.25); }
+  .highlight strong { font-weight: 600; }
+  .highlight.blue strong { color: var(--accent-blue); }
+  .highlight.teal strong { color: var(--accent-teal); }
+  .highlight.violet strong { color: var(--accent-violet); }
+  .highlight.amber strong { color: var(--accent-amber); }
+  .highlight.green strong { color: var(--accent-green); }
+  .highlight.rose strong { color: var(--accent-rose); }
+
+  /* ── NUMBERED LIST ── */
+  ol.styled {
+    counter-reset: items; list-style: none; padding: 0;
+    display: flex; flex-direction: column; gap: 10px; margin: 12px 0;
+  }
+  ol.styled li {
+    counter-increment: items; display: flex; gap: 14px;
+    font-size: .9rem; color: var(--text-secondary); align-items: flex-start;
+  }
+  ol.styled li::before {
+    content: counter(items, decimal-leading-zero);
+    font-family: var(--mono); font-size: .72rem;
+    color: var(--text-muted); min-width: 28px; padding-top: 2px; flex-shrink: 0;
+  }
+  ol.styled li strong { color: var(--text-primary); font-weight: 600; }
+
+  /* ── TWO COL ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-block; font-family: var(--mono); font-size: .68rem;
+    letter-spacing: .1em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 2px; margin-right: 6px; margin-bottom: 4px;
+  }
+  .badge.blue { background: rgba(79,156,249,.15); color: var(--accent-blue); }
+  .badge.teal { background: rgba(45,212,191,.15); color: var(--accent-teal); }
+  .badge.amber { background: rgba(245,158,11,.15); color: var(--accent-amber); }
+  .badge.rose { background: rgba(251,113,133,.15); color: var(--accent-rose); }
+  .badge.violet { background: rgba(167,139,250,.15); color: var(--accent-violet); }
+  .badge.green { background: rgba(52,211,153,.15); color: var(--accent-green); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center; padding: 40px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono); font-size: .72rem;
+    color: var(--text-muted); letter-spacing: .08em;
+  }
+
+  /* ── DISCUSSION BOX ── */
+  .discussion {
+    background: rgba(245,158,11,.05);
+    border: 1px solid rgba(245,158,11,.2);
+    border-left: 3px solid var(--accent-amber);
+    border-radius: 0 6px 6px 0;
+    padding: 16px 20px; margin: 16px 0;
+    font-size: .88rem; color: var(--text-secondary);
+  }
+  .discussion strong { color: var(--accent-amber); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="course-tag">CS11449 – Computer &amp; Society</div>
+  <h1>Course <span>Study Notes</span></h1>
+  <div class="header-sub">Chapter 1: IT &amp; Ethics &nbsp;|&nbsp; Chapter 2: Privacy &nbsp;|&nbsp; Chapter 3: Security Ethics &nbsp;|&nbsp; Chapter 4: Intellectual Property &amp; Patents</div>
+  <nav class="toc">
+    <a href="#ch0">Ch.1 IT &amp; Ethics</a>
+    <a href="#ch1">Ch.2 Privacy</a>
+    <a href="#ch2">Ch.3 Security &amp; Ethics</a>
+    <a href="#ch3">Ch.4 IP &amp; Patents</a>
+  </nav>
+</header>
+
+<main>
+
+<!-- ══════════════════════════════════════════════
+     CHAPTER 1 — UNWRAPPING THE GIFT (IT & Ethics)
+══════════════════════════════════════════════ -->
+<section class="chapter ch0" id="ch0">
+  <div class="chapter-label">Chapter 1</div>
+  <h2 class="chapter-title">Unwrapping the Gift — IT &amp; Ethics</h2>
+  <p style="color:var(--text-secondary);">Based on <em>A Gift of Fire</em> (5th ed.) by Sara Baase &amp; Timothy M. Henry. This chapter introduces the rapid pace of technological change, its unexpected consequences, the recurring themes of technology challenges, and foundational ethical frameworks.</p>
+
+  <!-- PACE OF CHANGE -->
+  <div class="section">
+    <div class="section-title">The Pace of Change</div>
+    <ul class="styled">
+      <li><strong>1940s</strong> — First computer was built.</li>
+      <li><strong>1956</strong> — First hard-drive disk weighed a ton and stored only five megabytes.</li>
+      <li><strong>1991</strong> — The Space Shuttle used a one-megahertz computer; ten years later, some cars had 100-megahertz computers.</li>
+      <li><strong>Today</strong> — Speeds of several gigahertz are now standard in consumer devices.</li>
+      <li><strong>Cell phones:</strong> Relatively few existed in the 1990s → ~5 billion worldwide by 2011 → <strong>16.8 billion</strong> in 2023 → 9.5 million in Jordan alone as of early 2025.</li>
+    </ul>
+  </div>
+
+  <!-- CHANGE & UNEXPECTED DEVELOPMENTS -->
+  <div class="section">
+    <div class="section-title">Change and Unexpected Developments</div>
+
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">📱</span>
+        <div class="card-title">Cell Phones — Beyond Calling</div>
+        <p>Originally used for calls. Now used for photos, music, video, email, health monitoring (diabetes), video conferencing, and AI agents. Raises issues of location tracking, camera-based privacy invasion, and distracted driving. Hands-free devices do <em>not</em> reduce distraction for young drivers.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🌐</span>
+        <div class="card-title">Social Networking</div>
+        <p>First site: classmates.com (1995). MySpace: 100M profiles by 2006. Facebook: started at Harvard as a student directory. Social networks enable civic organizing, volunteering, and revolution — but also stalking, bullying, and jurors tweeting during trials.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">✉️</span>
+        <div class="card-title">Communication &amp; the Web</div>
+        <p>1980s email was short text-only. Today billions of emails sent daily; texting/social media now preferred. Issues include spam, message explosion (CR), blurring of email etiquette vs. chat norms, and AI-generated content. Blogs evolved from amateur outlets into major news sources.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🤝</span>
+        <div class="card-title">Collaboration</div>
+        <p>Wikipedia — volunteer-written encyclopedia with reliability concerns (a 14-year-old posed as a PhD contributor). Open-source programmer communities. Web watchdog groups. Risk: emotionally-driven mobs acting without due process.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🛒</span>
+        <div class="card-title">E-Commerce</div>
+        <p>Amazon started in 1994 selling books. eBay enables peer auctions. Lower overhead reduced prices. PayPal emerged to solve payment trust issues. Small businesses and artists can bypass middlemen. The peer-to-peer economy was born. "Free" services often monetize user data.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🤖</span>
+        <div class="card-title">Artificial Intelligence</div>
+        <p>AI performs tasks requiring human intelligence — pattern recognition, speech recognition, handwriting reading, fingerprint matching, face matching. Self-driving cars must make real-time ethical decisions (e.g., unavoidable collisions). Narrow specialized skills are easier for machines than basic human cognition.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🦾</span>
+        <div class="card-title">Robots</div>
+        <p>Perform hazardous physical tasks: inspecting undersea cables, searching collapsed buildings, handling nuclear waste. Raises concerns: military use (exploding robots), job displacement, and factory automation. Ethical debate around lethal autonomous weapons.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">📡</span>
+        <div class="card-title">Smart Sensors &amp; Wearables</div>
+        <p>Accelerometers / MEMS (microelectromechanical systems) detect motion, gravity, temperature, moisture. Complex software interprets sensor data. <em>Wearware</em> = clothing with embedded sensors. Applications: airbags, robot locomotion, laptop drop protection, health monitoring.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">♿</span>
+        <div class="card-title">Assistive Technology</div>
+        <p>OCR + speech synthesizers let blind people read menus/receipts. Digital prosthetics enable amputees to walk, climb stairs, and fly. Voice control lets those with motor disabilities operate computers and appliances. Brain-signal chips (Neuralink) being developed — raises questions about human individuality.</p>
+      </div>
+    </div>
+
+    <div class="discussion">
+      <strong>Discussion:</strong> "A Masai warrior with a smartphone and Google has access to more information than the President did 15 years ago." (Bill Gates — ~90% stat). In some regions, people have easier access to phones than toilets. What does this say about equity and the digital divide?
+    </div>
+    <div class="discussion">
+      <strong>Discussion — Self-Driving Cars:</strong> The software must decide whom to hit when a crash is unavoidable (e.g., child in road vs. swerving into oncoming traffic). What criteria should govern such decisions? If autonomous vehicles cut fatalities by 90%, does that outweigh edge-case ethical failures?
+    </div>
+    <div class="discussion">
+      <strong>Discussion — AI &amp; Humanity:</strong> How will society react to fully robotic surgery? To not knowing if you're talking to a human or a machine (the Turing Test)? To brain implants that enhance memory with a search engine? Will we still be human?
+    </div>
+    <div class="discussion">
+      <strong>Discussion — "Free" Services:</strong> Many free tools (VPNs, apps, social platforms) fund themselves by collecting and selling user data. Hidden cost = your privacy. Is anything truly free?
+    </div>
+    <div class="discussion">
+      <strong>Discussion — Avatars &amp; Identity:</strong> Sites like Second Life let users take on personas entirely different from their real-life selves — enabling people with disabilities to interact without disclosure. What new ethical problems and benefits does this raise?
+    </div>
+  </div>
+
+  <!-- THEMES OF TECH CHALLENGES -->
+  <div class="section">
+    <div class="section-title">Themes of Technology Challenges</div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">🔄</span>
+        <div class="card-title">Old Problems in a New Context</div>
+        <p>Cyberspace mirrors offline society: crime, pornography, violent games, copyright infringement, advertising, gambling, and faulty products all exist online. Technology doesn't create new moral problems — it amplifies existing ones at scale.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🧠</span>
+        <div class="card-title">Adapting to New Technology</div>
+        <p>Technological change requires adaptive changes in laws, social institutions, business policies, personal skills, attitudes, and behavior. We must think in new ways — not just apply old frameworks to new tools.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">⚖️</span>
+        <div class="card-title">Varied Sources of Solutions</div>
+        <p>Solutions come from technology, law, market forces, social norms, and individual responsibility. No single source is sufficient. Trade-offs are unavoidable — increasing security typically reduces convenience.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🌍</span>
+        <div class="card-title">Global Reach of the Internet</div>
+        <p>The net enables instant communication with anyone, anywhere. This creates jurisdictional challenges (which country's laws apply?), cultural conflicts, and new opportunities for both cooperation and harm at global scale.</p>
+      </div>
+    </div>
+    <div class="highlight green" style="margin-top:16px;">
+      <strong>Key Principle:</strong> There is a fundamental difference between personal choices, business policies, and law. Something may be legal but unethical, or ethical but not yet codified in law. These distinctions matter enormously in technology contexts.
+    </div>
+  </div>
+
+  <!-- ETHICS SECTION -->
+  <div class="section">
+    <div class="section-title">Ethics — What Is It?</div>
+    <p>Ethics is the study of what it means to <strong style="color:var(--accent-green);">"do the right thing."</strong> It assumes people are rational and make free choices. It provides rules to guide our interactions and actions that affect others.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Theory</th><th>Core Idea</th><th>Key Concept</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Deontological</strong></td>
+            <td>Emphasizes duty and absolute rules to be followed regardless of consequences. An act is ethical if it complies with ethical rules, chosen for that reason.</td>
+            <td>Example: <em>"Do not lie"</em> — even if lying would produce a better outcome.</td>
+          </tr>
+          <tr>
+            <td><strong>Utilitarianism (Consequentialism)</strong></td>
+            <td>An action's morality is judged by its outcomes. The goal is to maximize happiness/utility for the greatest number (John Stuart Mill).</td>
+            <td><em>Act utilitarianism</em>: judge each action individually. <em>Rule utilitarianism</em>: adopt general rules that maximize utility → leads to law. Raises concern: majority benefit vs. minority harm ("collateral damage").</td>
+          </tr>
+          <tr>
+            <td><strong>Natural Rights</strong></td>
+            <td>Rights that come from nature or human nature — not granted by government. People have the right to self-determination without interference.</td>
+            <td><em>Negative rights (liberties)</em>: right to act without interference (e.g., freedom of speech). <em>Positive rights (claim-rights)</em>: an obligation on others to provide something (e.g., right to healthcare).</td>
+          </tr>
+          <tr>
+            <td><strong>Golden Rule</strong></td>
+            <td>Treat others as you would want to be treated. Universal across cultures and religions.</td>
+            <td>A simple but powerful guide for interpersonal ethics.</td>
+          </tr>
+          <tr>
+            <td><strong>Social Contract</strong></td>
+            <td>People voluntarily submit to common law to live in civil society (Rawls). Justice is what rational people behind a "veil of ignorance" would agree to.</td>
+            <td>Foundation for democratic law. Legitimacy comes from consent of the governed.</td>
+          </tr>
+          <tr>
+            <td><strong>Contributing to Society</strong></td>
+            <td>Doing one's work honestly, responsibly, ethically, creatively, and well is itself a moral act.</td>
+            <td>Applies directly to software developers, engineers, and IT professionals.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- IMPORTANT DISTINCTIONS -->
+  <div class="section">
+    <div class="section-title">Ethics vs. Morals vs. Laws — Key Distinctions</div>
+    <div class="two-col">
+      <div class="highlight green">
+        <strong>Ethics</strong><br>
+        An innate, universal understanding of right/wrong that transcends culture, religion, and time. Broader than law. Studies and questions morality. Fills the gap between legal standards and specific choices. Ethics <em>precedes</em> law — ethical principles shape whether laws should be enacted.
+      </div>
+      <div class="highlight blue">
+        <strong>Morals</strong><br>
+        Living according to a moral code — principles of right and wrong. Basic morality condemns murder, adultery, lying, and stealing. Often used interchangeably with ethics, though technically distinct. Morals are often culturally situated; ethics aims to transcend culture.
+      </div>
+    </div>
+    <div class="highlight amber" style="margin-top:0;">
+      <strong>Law</strong><br>
+      Rules established by authority (government) and enforced with sanctions. Law sets minimum standards applicable to all. A good law leaves room for voluntary ethical choices above the minimum. "Letter of the law" vs. "Spirit of the law" — following the technical wording while violating the intent is legal but unethical. Not everything unethical is illegal, and not everything illegal is necessarily unethical.
+    </div>
+
+    <ul class="styled" style="margin-top:16px;">
+      <li>Acts are either <strong>ethically obligatory</strong>, <strong>ethically acceptable</strong>, or <strong>ethically prohibited</strong>.</li>
+      <li><strong>Harm alone</strong> is not sufficient to determine an act is unethical — context matters (e.g., "collateral damage" in war, side effects of medicine).</li>
+      <li><strong>Wrong vs. harm:</strong> An act can be wrong (violates a rule) without causing harm, and can cause harm without being wrong.</li>
+      <li><strong>Personal preference ≠ ethics:</strong> Disliking something personally does not make it unethical.</li>
+      <li><strong>Do organizations have ethics?</strong> Ultimately, individuals make decisions — but both individuals and organizations can be held responsible. A company's ethical character depends on whether its goal-achieving actions comply with ethical constraints and laws.</li>
+      <li><strong>No simple answers:</strong> Human situations are complex. Ethical theories identify important principles but rarely give clear-cut answers. Multiple theories can support opposite sides of the same issue.</li>
+      <li><strong>"Erring on the side of caution"</strong> — when unsure, default to the more ethical choice. استفت قلبك (Consult your conscience).</li>
+    </ul>
+
+    <div class="discussion">
+      <strong>Discussion — Riggs vs. Palmer:</strong> A grandson murdered his grandfather to inherit his estate. Legally, he should inherit — the will was valid. Ethically, courts ruled he could not benefit from his own crime. Ethics filled the gap where law alone was insufficient.
+    </div>
+    <div class="discussion">
+      <strong>Discussion — Negative vs. Positive Rights:</strong> Freedom of speech (negative right: act without interference) conflicts with protecting children from inappropriate content (positive right: obligation to protect). Is the right to remain silent a negative or positive right?
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════════════════════════════
+     CHAPTER 2 — PRIVACY
+══════════════════════════════════════════════ -->
+<section class="chapter ch1" id="ch1">
+  <div class="chapter-label">Chapter 2</div>
+  <h2 class="chapter-title">Privacy</h2>
+
+  <!-- KEY ASPECTS -->
+  <div class="section">
+    <div class="section-title">Key Aspects of Privacy</div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">🚪</span>
+        <div class="card-title">Freedom from Intrusion</div>
+        <p>The right to be left alone — personal space and life should not be invaded without consent.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🗂️</span>
+        <div class="card-title">Control of Information</div>
+        <p>Individuals should be able to determine who collects, stores, and uses data about them.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">👁️</span>
+        <div class="card-title">Freedom from Surveillance</div>
+        <p>Protection from being tracked, followed, or watched without knowledge or permission.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRIVACY THREATS -->
+  <div class="section">
+    <div class="section-title">Categories of Privacy Threats</div>
+    <ul class="styled">
+      <li><strong>Intentional institutional use</strong> — Organizations deliberately exploiting personal data for commercial or governmental purposes.</li>
+      <li><strong>Unauthorized insider release</strong> — Employees leaking or misusing data they have privileged access to.</li>
+      <li><strong>Theft of information</strong> — Malicious actors stealing personal data via hacking or other means.</li>
+      <li><strong>Inadvertent leakage</strong> — Unintentional exposure of data due to software bugs, misconfigurations, or human error.</li>
+      <li><strong>Our own actions</strong> — Intentional trade-offs (giving up privacy for a benefit) and unknowing exposure due to lack of awareness.</li>
+    </ul>
+  </div>
+
+  <!-- NEW TECHNOLOGY RISKS -->
+  <div class="section">
+    <div class="section-title">New Technology, New Risks</div>
+    <p>Technology has dramatically expanded the scale and nature of privacy threats. Key risk factors include:</p>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">🔍 Search Query Data</div>
+        <p>Search engines collect terabytes of data daily, used for targeted advertising and service development. This data can be subpoenaed by courts or examined during visa/job applications.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">📱 Smartphones</div>
+        <p>Location apps and mobile software often store and transmit data without the user's knowledge. Tests found half of apps sent device IDs or location to third parties. Some banking apps inadvertently stored account credentials in hidden files.</p>
+      </div>
+    </div>
+    <ul class="styled" style="margin-top:16px;">
+      <li>Everything done in cyberspace is recorded and stored at scale.</li>
+      <li>People are largely unaware of how much data is collected about them.</li>
+      <li>Software complexity makes securing data extremely difficult.</li>
+      <li>Small collected data points can be aggregated to form detailed personal profiles.</li>
+      <li>Re-identification has become easy due to the volume of data and powerful analysis tools.</li>
+      <li>Once information is public on the web, it is essentially available to everyone, permanently.</li>
+      <li>Data collected for one purpose routinely finds other uses.</li>
+      <li>Governments can request personal data held by private companies and organizations.</li>
+      <li>Individuals depend on the <em>goodwill</em> of businesses to protect their data — there is little direct control.</li>
+    </ul>
+  </div>
+
+  <!-- TERMINOLOGY -->
+  <div class="section">
+    <div class="section-title">Key Terminology</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Term</th><th>Definition</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Personal Information</strong></td><td>Any information relating to an individual person.</td></tr>
+          <tr><td><strong>Informed Consent</strong></td><td>Users being aware of what information is collected and how it is used before agreeing to it.</td></tr>
+          <tr><td><strong>Invisible Information Gathering</strong></td><td>Collection of personal information about a user without their knowledge.</td></tr>
+          <tr><td><strong>Cookies</strong></td><td>Files a website stores on a visitor's computer to track activity, personalize service, and target advertising. Subject to EU legislation requiring user consent.</td></tr>
+          <tr><td><strong>Secondary Use</strong></td><td>Using personal information for a purpose other than the one for which it was originally provided.</td></tr>
+          <tr><td><strong>Data Mining</strong></td><td>Searching and analyzing large data sets to find patterns and develop new knowledge.</td></tr>
+          <tr><td><strong>Computer Matching (Cross-Referencing)</strong></td><td>Combining information from multiple databases (e.g., via SSN) to create linked records.</td></tr>
+          <tr><td><strong>Computer Profiling</strong></td><td>Analyzing data to characterize people likely to exhibit certain behaviors, applied broadly across groups.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- OPT IN / OPT OUT -->
+  <div class="section">
+    <div class="section-title">Informed Consent Mechanisms</div>
+    <div class="two-col">
+      <div class="highlight blue">
+        <strong>Opt-Out</strong><br>
+        The organization may use data by default. The individual must take explicit action (e.g., checking a box) to prevent use. Result: more people end up "in" the data pool. Often online checkboxes are pre-checked, requiring users to actively uncheck.
+      </div>
+      <div class="highlight teal">
+        <strong>Opt-In</strong><br>
+        Data may only be used if the individual explicitly grants permission (e.g., checking a box). Result: more people end up "out" of the data pool. Considered more protective of privacy.
+      </div>
+    </div>
+    <p style="margin-top:12px;">Most privacy policies include a <em>"subject to change without notice"</em> clause, which undermines the meaningful nature of initial consent.</p>
+  </div>
+
+  <!-- FAIR INFORMATION PRINCIPLES -->
+  <div class="section">
+    <div class="section-title">Fair Information Principles</div>
+    <ol class="styled">
+      <li><strong>Transparency</strong> — Inform people when you collect information about them.</li>
+      <li><strong>Data Minimization</strong> — Collect only the data that is actually needed.</li>
+      <li><strong>Choice</strong> — Offer a way for people to opt out.</li>
+      <li><strong>Retention Limits</strong> — Keep data only as long as necessary.</li>
+      <li><strong>Accuracy</strong> — Maintain correctness and currency of stored data.</li>
+      <li><strong>Security</strong> — Protect data from unauthorized access or disclosure.</li>
+      <li><strong>Accountability</strong> — Develop clear policies for responding to law enforcement requests.</li>
+    </ol>
+  </div>
+
+  <!-- NEW TECHNOLOGIES SECTION -->
+  <div class="section">
+    <div class="section-title">New Technologies &amp; Their Privacy Implications</div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">📷</span>
+        <div class="card-title">Video Surveillance &amp; Face Recognition</div>
+        <p>Security cameras trade privacy for security. England deployed millions of public cameras. The 2001 Super Bowl covertly scanned 100,000 faces. Studies found abuses by surveillance operators. Some cities abandoned systems as they didn't reduce crime meaningfully.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🌐</span>
+        <div class="card-title">Social Networks</div>
+        <p>Users expose opinions, location ("away from home"), gossip, and photos. Platforms introduce features with unexpected privacy defaults (e.g., Facebook announcing friends' purchases). Embarrassing material is extremely difficult to permanently delete.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">☁️</span>
+        <div class="card-title">Cloud Computing</div>
+        <p>Cloud services offer convenience but raise serious questions about the security of personal data stored in systems outside user control, accessible to the provider and potentially to governments.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">📍</span>
+        <div class="card-title">Location Tracking (GPS)</div>
+        <p>GPS and cell-based services know exactly where a person is at any moment. Both benefits (navigation, emergency services) and serious risks (surveillance, stalking) exist.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- GOVERNMENT SYSTEMS -->
+  <div class="section">
+    <div class="section-title">Government Systems</div>
+    <div class="highlight blue">
+      <strong>Key Issues:</strong> Governments use data mining and computer matching to fight terrorism and crime. Public records (bankruptcy, property, arrest records, government salaries) are accessible by definition but create identity theft risks. National ID systems like the US Social Security Number (introduced 1936) are widely used, easily falsified, and viewed by critics as threats to freedom — reminiscent of demands for "papers" in authoritarian regimes.
+    </div>
+    <p style="margin-top:12px;">Two fundamental problems arise from new technologies in the government context: (1) personal information increasingly resides in large external databases outside individual control; (2) governments can now search homes and persons remotely and covertly using technology.</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════════════════════════════
+     CHAPTER 3 — SECURITY ETHICS
+══════════════════════════════════════════════ -->
+<section class="chapter ch2" id="ch2">
+  <div class="chapter-label">Chapter 3</div>
+  <h2 class="chapter-title">Legal, Ethical &amp; Professional Issues in Information Security</h2>
+
+  <!-- INTRO -->
+  <div class="section">
+    <div class="section-title">Why This Matters</div>
+    <p>Information security professionals must understand their organization's legal and ethical responsibilities. To minimize risks, they must: (1) understand the current legal environment — laws, policies, bylaws, and regulations; (2) stay current with evolving laws; (3) watch for emerging issues. Failure can result in significant financial and legal liabilities for individuals and organizations.</p>
+  </div>
+
+  <!-- LAW VS ETHICS -->
+  <div class="section">
+    <div class="section-title">Law vs. Ethics</div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">⚖️ Law</div>
+        <p>Written rules that mandate or prohibit behavior, enforced by the state/a third party. Violations result in financial penalties or custodial sentences. Law is narrower in scope than ethics.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">🧭 Ethics</div>
+        <p>Defines socially acceptable behavior, driven by personal values, morals, and cultural norms. Generally unwritten. Violations are not formally punished — only enforced by conscience. Broader than law.</p>
+      </div>
+    </div>
+    <div class="table-wrap" style="margin-top:20px;">
+      <table>
+        <thead><tr><th>Concept</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Cultural Mores</strong></td><td>Fixed moral attitudes or customs of a particular group; the shared behavioral standards of a society.</td></tr>
+          <tr><td><strong>Ethics</strong></td><td>Socially acceptable behavior; what a society collectively considers right or wrong.</td></tr>
+          <tr><td><strong>Laws</strong></td><td>Rules that mandate or prohibit certain behavior, enforced by the state, carrying formal sanctions.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ORGANIZATIONAL LIABILITY -->
+  <div class="section">
+    <div class="section-title">Organizational Liability</div>
+    <p>Organizations must ensure every employee understands acceptable and unacceptable behavior to meet legal obligations. Reasons include:</p>
+    <ul class="styled">
+      <li>To maintain the reputation of the company and its employees.</li>
+      <li>To preserve the legal rights of the company, employees, and customers.</li>
+      <li>Because if an employee performs an illegal or unethical act causing harm, the employer can be held financially liable — organizations spend enormous effort minimizing this risk.</li>
+    </ul>
+  </div>
+
+  <!-- POLICY -->
+  <div class="section">
+    <div class="section-title">Policy in Information Security</div>
+    <p>Policy is the list of expectations describing acceptable and unacceptable employee behavior. For a policy to be legally enforceable, it must meet all five criteria:</p>
+    <ol class="styled">
+      <li><strong>Dissemination</strong> — The policy must be made easily available to employees (hard copy, electronic distribution).</li>
+      <li><strong>Review</strong> — The policy must be distributed in an understandable form; multiple languages if needed.</li>
+      <li><strong>Comprehension</strong> — The organization must demonstrate employees understand the content (quizzes, assessments).</li>
+      <li><strong>Compliance</strong> — Employees must affirmatively agree to the policy via logon banners (requiring a click) or signed documents.</li>
+      <li><strong>Uniform Enforcement</strong> — The policy must be enforced consistently, regardless of employment status or role.</li>
+    </ol>
+    <div class="highlight teal" style="margin-top:16px;">
+      <strong>Important:</strong> Only when all five conditions are satisfied can an organization penalize policy violators without fear of legal retribution.
+    </div>
+  </div>
+
+  <!-- TYPES OF LAW -->
+  <div class="section">
+    <div class="section-title">Types of Law</div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">🏛️</span>
+        <div class="card-title">Civil Law</div>
+        <p>Governs relationships between individuals and organizations. Includes contract law, employment law, family law, and tort law. Tort law enables individuals to seek compensation for personal, physical, or financial injury.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🚔</span>
+        <div class="card-title">Criminal Law</div>
+        <p>Addresses violations deemed harmful to society — traffic law, public order, property damage, personal harm. Cases are brought by the government (prosecution) against a defendant.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">👨‍👩‍👧</span>
+        <div class="card-title">Private Law</div>
+        <p>A subset of civil law regulating relationships among individuals and between individuals and organizations. Includes family law, commercial law, and labor law.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🏛️</span>
+        <div class="card-title">Public Law</div>
+        <p>Regulates government structure and its relationships with citizens, employees, and other governments. Includes criminal law, administrative law, and constitutional law.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap" style="margin-top:24px;">
+      <table>
+        <thead><tr><th>Feature</th><th>Criminal Law</th><th>Civil Law</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Purpose</strong></td><td>Maintain public order; punish offenders; deter crime</td><td>Resolve disputes; provide remedy to injured party</td></tr>
+          <tr><td><strong>Filed By</strong></td><td>Government (state/prosecution)</td><td>Private party (plaintiff)</td></tr>
+          <tr><td><strong>Parties</strong></td><td>Prosecutor vs. Defendant</td><td>Plaintiff vs. Defendant</td></tr>
+          <tr><td><strong>Outcome</strong></td><td>Imprisonment, fines, community service</td><td>Monetary damages, injunctions, specific performance</td></tr>
+          <tr><td><strong>Burden of Proof</strong></td><td>Beyond a reasonable doubt</td><td>Preponderance of the evidence (lower standard)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- US LAWS TABLE -->
+  <div class="section">
+    <div class="section-title">Key U.S. Information Security Laws</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Area</th><th>Act</th><th>Year</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Online Commerce</strong></td>
+            <td>Federal Trade Commission Act (FTCA)</td>
+            <td><em>1914</em></td>
+            <td>Used to challenge organizations making deceptive claims about privacy and security of customer information.</td>
+          </tr>
+          <tr>
+            <td><strong>Credit Information</strong></td>
+            <td>Fair Credit Reporting Act (FCRA)</td>
+            <td><em>1970</em></td>
+            <td>Regulates the collection and use of consumer credit information.</td>
+          </tr>
+          <tr>
+            <td><strong>Privacy</strong></td>
+            <td>Federal Privacy Act (FPA)</td>
+            <td><em>1974</em></td>
+            <td>Governs federal agency use of personal information.</td>
+          </tr>
+          <tr>
+            <td><strong>Copyright</strong></td>
+            <td>Copyright Act (17 USC)</td>
+            <td><em>1976</em></td>
+            <td>Protects intellectual property including publications and software.</td>
+          </tr>
+          <tr>
+            <td><strong>Cryptography / Wiretapping</strong></td>
+            <td>Electronic Communications Privacy Act (ECPA)</td>
+            <td><em>1986</em></td>
+            <td>Regulates interception and disclosure of electronic information (Federal Wiretapping Act).</td>
+          </tr>
+          <tr>
+            <td><strong>Computer Threats</strong></td>
+            <td>Computer Fraud and Abuse Act (CFAA) — 18 USC 1030</td>
+            <td><em>1986</em></td>
+            <td>Defines and formalizes laws to counter computer-related crimes. Amended in 1996, 2001, and 2006.</td>
+          </tr>
+          <tr>
+            <td><strong>Encryption Rights</strong></td>
+            <td>Security and Freedom Through Encryption Act (SAFE)</td>
+            <td><em>1997</em></td>
+            <td>Affirms the right to use and sell encryption products; relaxes export controls on such products.</td>
+          </tr>
+          <tr>
+            <td><strong>Spam</strong></td>
+            <td>CAN-SPAM Act (15 USC 7701)</td>
+            <td><em>2003</em></td>
+            <td>Sets national standards for commercial email distribution, including mobile phone spam.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PRIVACY IN INFOSEC -->
+  <div class="section">
+    <div class="section-title">Privacy in the Context of Information Security</div>
+    <p>Privacy in information security is the right of individuals or groups to protect themselves and their information from unauthorized access, providing <strong style="color:var(--text-primary);">confidentiality</strong>. Common privacy violations include:</p>
+    <ul class="styled">
+      <li>Organizations collecting, swapping, and selling personal data (name, address, phone, location) as a commodity — driving calls for legal protections.</li>
+      <li>Eavesdropping on private communications — phone calls, messages, emails.</li>
+    </ul>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ══════════════════════════════════════════════
+     CHAPTER 4 — IP & PATENTS
+══════════════════════════════════════════════ -->
+<section class="chapter ch3" id="ch3">
+  <div class="chapter-label">Chapter 4</div>
+  <h2 class="chapter-title">Intellectual Property Rights &amp; Patents</h2>
+
+  <!-- WHAT ARE IPRS -->
+  <div class="section">
+    <div class="section-title">What Are Intellectual Property Rights?</div>
+    <p>Intellectual Property Rights (IPRs) are legal mechanisms that protect the works and inventions of creators worldwide. They grant the right to use, license, and profit from one's creations. IPRs are critical for motivating innovation — global patent registrations grew 3.6% from 2020 to 2021.</p>
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">™️</span>
+        <div class="card-title">Trademarks</div>
+        <p>Protect words, symbols, and designs that distinguish a company's goods or services. Can last indefinitely if actively used. Example: Nike's "Just Do It."</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">©️</span>
+        <div class="card-title">Copyrights</div>
+        <p>Protect original creative works — books, music, movies, software. Gives creators control over who can copy, share, or perform their work. Can last beyond the creator's death.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🔒</span>
+        <div class="card-title">Trade Secrets</div>
+        <p>Guard sensitive data that gives a business a competitive advantage. Protected as long as they remain valuable and undisclosed. Examples: KFC recipe, Coca-Cola formula.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">📋</span>
+        <div class="card-title">Patents</div>
+        <p>Protect new, useful, and non-obvious inventions. Grant the inventor exclusive rights (~20 years) in exchange for public disclosure of the invention. Examples: Edison's lightbulb, Bell's telephone.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PATENTS IN DEPTH -->
+  <div class="section">
+    <div class="section-title">Patents — Deep Dive</div>
+    <p>A patent grants its owner the exclusive legal authority to make, use, sell, or import their invention for a fixed period. In return, the inventor must publicly disclose how the invention works. This distinguishes patents from trade secrets.</p>
+
+    <div class="highlight violet" style="margin:16px 0;">
+      <strong>Three Core Patent Requirements:</strong><br>
+      <strong>Novelty</strong> — The invention must be entirely new and previously undisclosed (in Jordan: absolute novelty, meaning not used or published anywhere in the world). <br>
+      <strong>Utility</strong> — The invention must have a real-world, practical use and be capable of industrial application. <br>
+      <strong>Non-Obviousness</strong> — The invention must not be trivial or obvious to a person of ordinary skill in the relevant field.
+    </div>
+
+    <div class="section-title" style="margin-top:28px;">Types of Patents</div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">🔧</span>
+        <div class="card-title">Utility Patents</div>
+        <p>Most common — over two-thirds of all patents. Cover functional inventions. Three subtypes: <em>General utility</em> (functionality), <em>Specific utility</em> (how it carries out the function), <em>Moral utility</em> (invention must not enable harm). Annual maintenance fees apply with a 6-month grace period.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🎨</span>
+        <div class="card-title">Design Patents</div>
+        <p>Protect the ornamental/aesthetic appearance of an object — chairs, footwear, fonts, computer icons, curved UI edges. The design must be aesthetically pleasing and inseparable from the object. Lifespan: 15 years. No maintenance fees required.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🌱</span>
+        <div class="card-title">Plant Patents</div>
+        <p>Cover invented or discovered asexually reproduced plant varieties (grafting, cutting — not seed-based). Examples: Strawberry Plant "Aroma," Grape "La Crescent." Lifespan: 20 years. No maintenance costs.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PATENT PROCESS -->
+  <div class="section">
+    <div class="section-title">Process of Obtaining a Patent</div>
+    <ol class="styled">
+      <li>Submit a patent application to the relevant government body, fully describing the invention, its function, and how it differs from existing solutions.</li>
+      <li>Include detailed <strong>claims</strong> — precise declarations of what is considered patentable.</li>
+      <li>A technical examiner is assigned based on the nature of the invention.</li>
+      <li>Novelty is verified — the patent office may contact foreign offices to confirm no duplicate exists.</li>
+      <li>Patent is granted (or rejected) based on the novelty, utility, and non-obviousness criteria.</li>
+    </ol>
+
+    <div class="highlight amber" style="margin-top:16px;">
+      <strong>Important:</strong> There is no worldwide patent. Patents are <em>territorial</em> — valid only in the country where registered. To protect an invention internationally, it must be filed individually in each country within 12 months of the original registration. A Patent Cooperation Treaty (PCT) extends this window to 30 months but costs $3,700–$4,500.
+    </div>
+  </div>
+
+  <!-- JORDAN SPECIFICS -->
+  <div class="section">
+    <div class="section-title">Patent Registration in Jordan</div>
+    <ul class="styled">
+      <li>Applications must be submitted <strong>in person</strong> at the Ministry of Industry, Trade, and Supplies — no online application available.</li>
+      <li>A proxy or licensed industrial property agent may act on the applicant's behalf (with notarized power of attorney).</li>
+      <li>The Jordanian patent office verifies novelty by contacting foreign patent offices.</li>
+      <li>Total registration cost: <strong>150 JD</strong> (50 JD registration + 50 JD Official Gazette publication + 50 JD final certificate).</li>
+      <li>Required documents include: ID card, detailed invention description, drawings, sworn statement, power of attorney, priority right certificate if applicable.</li>
+      <li>Patent protection duration: <strong>20 years</strong> from the application date.</li>
+      <li>Annual maintenance fees are required, with a 6-month grace period for late payment.</li>
+    </ul>
+  </div>
+
+  <!-- IP FIELDS -->
+  <div class="section">
+    <div class="section-title">IP Across Different Fields</div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">🔐</span>
+        <div class="card-title">Cybersecurity</div>
+        <p>IP is a critical asset for companies like PepsiCo and Microsoft. The CIA triad (Confidentiality, Integrity, Availability) protects IP: AES-128/RSA for confidentiality; DSA/Public Key for integrity; SCTP to mitigate DDoS for availability.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🎮</span>
+        <div class="card-title">Video Games</div>
+        <p>Multiple IP types apply: <em>Copyright</em> for characters, art, music, story; <em>Trademarks</em> for brand identity; <em>Patents</em> for gameplay innovations; <em>Trade Secrets</em> for design strategies; <em>Licensing</em> for borrowed IP; <em>Digital Rights</em> for online distribution.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🌍</span>
+        <div class="card-title">Websites</div>
+        <p>Websites rely on <em>Copyright</em> for content, <em>Trademarks</em> for names/logos, unique <em>Domain Names</em>, <em>Privacy Policies</em> for data handling, <em>Open Source</em> licensing rules, and <em>Patents</em> for underlying technology methods.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADVANTAGES & DISADVANTAGES -->
+  <div class="section">
+    <div class="section-title">IP Advantages &amp; Disadvantages</div>
+    <div class="two-col">
+      <div>
+        <p style="font-weight:600; color:var(--accent-teal); margin-bottom:10px;">✅ Advantages</p>
+        <ul class="styled">
+          <li><strong>Competitive Edge</strong> — Competitors cannot simply copy protected innovations.</li>
+          <li><strong>Enhanced Company Value</strong> — IP assets significantly increase business worth for investors and buyers.</li>
+          <li><strong>Income Generation</strong> — IP can be licensed for royalties or sold outright.</li>
+          <li><strong>Marketing &amp; Branding</strong> — Trademarks differentiate businesses, build trust, and attract customers.</li>
+          <li><strong>Financing</strong> — IP assets can serve as collateral for loans or attract investment.</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-weight:600; color:var(--accent-rose); margin-bottom:10px;">❌ Disadvantages</p>
+        <ul class="styled">
+          <li><strong>High Costs</strong> — Legal fees, filing fees, and maintenance fees can be prohibitively expensive, especially for complex inventions.</li>
+          <li><strong>Difficult to Enforce</strong> — Stopping copying or theft is challenging; enforcement actions can alienate customers and harm reputation.</li>
+          <li><strong>Reduced Competition</strong> — Patent monopolies can result in oligopolies, fewer consumer choices, and higher prices.</li>
+          <li><strong>Barriers to Innovation</strong> — Patents can block incremental improvements or new entrants from building on existing ideas.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETHICAL & LEGAL -->
+  <div class="section">
+    <div class="section-title">Ethical &amp; Legal Considerations</div>
+    <p>While patents aim to incentivize innovation, they raise significant ethical and legal questions affecting consumers, competitors, researchers, and society:</p>
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">💊</span>
+        <div class="card-title">Pharmaceuticals</div>
+        <p>Patents on life-saving medications create high prices inaccessible to low-income and developing-nation populations. This restricts generic alternatives. Example: insulin pricing controversies in the US. (Frederick Banting sold insulin's patent for $1 in 1923.)</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">💻</span>
+        <div class="card-title">Software Industry</div>
+        <p>Patents protect against unauthorized copying but can restrict how existing code is used and modified, limiting developer creativity and collaboration. Patent litigation is costly and time-consuming.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🧬</span>
+        <div class="card-title">Biotechnology</div>
+        <p>Patents on biological processes and natural resources raise issues about ownership of native knowledge, biodiversity, and environmental sustainability. Example: Monsanto's controversies over genetically modified seed patents.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🤖</span>
+        <div class="card-title">AI &amp; Digital Media</div>
+        <p>Emerging battles: Getty Images vs. Stability AI (Stable Diffusion trained on copyrighted images without consent); RED Digital Cinema vs. competitors over compressed RAW video patents. Artists and companies seek billions in damages.</p>
+      </div>
+    </div>
+    <div class="highlight violet" style="margin-top:20px;">
+      <strong>Conclusion:</strong> IPRs are essential for economic growth, innovation, and protecting creators' investments. However, the ethical implications — particularly around access, monopoly power, and knowledge sharing — require ongoing attention from lawmakers, businesses, and society. Jordan and other countries continue to develop more efficient, digitally accessible patent systems to support inventors.
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  CS11449 – Computer &amp; Society &nbsp;·&nbsp; Princess Sumaya University for Technology &nbsp;·&nbsp; Full Course Study Summary
+</footer>
+
+</body>
+</html>
